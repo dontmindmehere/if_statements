@@ -3,6 +3,12 @@ support for control flow in python
 
 There are two main ways to implement If/Elif/Else statements in python:
 
+<pre>
+    <code>
+    from if_statements import If, Elif, Else
+    </code>
+</pre>  
+
 <b>1.Using a variable:</b>
 
 a. Initialize an instance of If, bind it to a variable, and give it a condition as well as an action (which is a function, followed by any number of arguments).
