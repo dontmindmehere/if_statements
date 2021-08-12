@@ -1,43 +1,43 @@
-from typing import Callable, Union
+from typing import Callable, Union, Any
 
-class if_:
+class If:
     def __init__(self, condition: bool):
         self.condition = condition
         self.done = False
-        
-    def do(self, action: Callable):
+
+    def do(self, action: Callable, *args: Any):
         if self.condition:
             self.done = True
-            action()
+            action(*args)
         return self
-    
 
-class elif_:
-    def __init__(self, parent: Union[if_, 'elif_'], condition: bool):
+
+class Elif:
+    def __init__(self, parent: Union[If, 'Elif'], condition: bool):
         self.parent = parent
         self.condition = condition
-        
-    def do(self, action: Callable):
+
+    def do(self, action: Callable, *args: Any):
         if self.condition and not self.parent.done:
             self.parent.done = True
-            action()
-            
-            
-class else_:
-    def __init__(self, parent: if_):
+            action(*args)
+
+
+class Else:
+    def __init__(self, parent: If):
         self.parent = parent
-        
-    def do(self, action: Callable):
+
+    def do(self, action: Callable, *args: Any):
         if not self.parent.done:
             self.parent.done = True
-            action()
-            
-            
+            action(*args)
+
+
+
 if __name__ == '__main__':
-    from random import randint
-    i = randint(0, 15)
-    a = if_(i<3).do(lambda: print("if st"))
-    elif_(a, i<7).do(lambda: print("elif 1"))
-    elif_(a, i>7).do(lambda: print("elif 2"))
-    elif_(a, i==7).do(lambda: print("elif 3"))
-    else_(a).do(lambda: print("else"))
+    for i in range(5):
+        a = If(i == 0).do(print, "If\t", F"{i = }")
+        Elif(a, i == 1).do(print, "Elif\t", F"{i = }")
+        Elif(a, i == 2).do(print, "Elif\t", F"{i = }")
+        Elif(a, i == 3).do(print, "Elif\t", F"{i = }")
+        Else(a).do(print, "Else\t", F"{i = }")
